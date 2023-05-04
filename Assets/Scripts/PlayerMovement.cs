@@ -2,8 +2,6 @@
 
 public class PlayerMovement : MonoBehaviour
 {
-    private const float rad = Mathf.Deg2Rad;
-
     [SerializeField]
     PlayerInput playerInput;
     [SerializeField]
@@ -14,37 +12,17 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.position += Speed() * MoveDirection();
+        if (playerInput)
+        {
+            float newPlayerAngle = rotateSpeed * Time.deltaTime * playerInput.RotationInput + transform.eulerAngles.y;
+            transform.eulerAngles = new Vector3(0.0f, newPlayerAngle, 0.0f);
+
+            transform.position += Speed() * Direction.MoveDirection(newPlayerAngle);
+        }
     }
 
     private float Speed()
     {
-        if (playerInput)
-        {
-            return moveSpeed * Time.deltaTime * playerInput.MoveInput;
-        }
-        else
-        {
-            return 0.0f;
-        }
-    }
-
-    private Vector3 MoveDirection()
-    {
-        if (playerInput)
-        {
-            float newAngle = rotateSpeed * Time.deltaTime * playerInput.RotationInput + transform.eulerAngles.y;
-            transform.eulerAngles = new Vector3(0.0f, newAngle, 0.0f);
-
-            float angle = transform.eulerAngles.y * rad;
-            float front = -Mathf.Sin(angle);
-            float side = Mathf.Cos(angle);
-
-            return new Vector3(side, 0.0f, front);
-        }
-        else
-        {
-            return Vector3.zero;
-        }
+        return moveSpeed * Time.deltaTime * playerInput.MoveInput;
     }
 }

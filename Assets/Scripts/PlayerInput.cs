@@ -12,26 +12,33 @@ public class PlayerInput : MonoBehaviour
     [SerializeField]
     CurrentPlayer player;
 
+    public delegate void ShootDelegate();
+
     public float MoveInput { get => moveInput; }
     public float RotationInput { get => rotationInput; }
+
+    public ShootDelegate ShootInput { get; set; }
 
     private void Awake()
     {
         playerControls = new PlayerControls();
         InputAction playerMove;
         InputAction playerRotate;
+        InputAction playerShoot;
 
         if (player == CurrentPlayer.player1)
         {
             //Assign Controls for Player 1
             playerMove = playerControls.Player1.Move;
             playerRotate = playerControls.Player1.Rotate;
+            playerShoot = playerControls.Player1.Shoot;
         }
         else
         {
             //Assign Controls for Player 2
             playerMove = playerControls.Player2.Move;
             playerRotate = playerControls.Player2.Rotate;
+            playerShoot = playerControls.Player2.Shoot;
         }
 
         //Assign Move Value
@@ -41,6 +48,9 @@ public class PlayerInput : MonoBehaviour
         //Assign Rotate Value
         playerRotate.performed += _ => Rotate(_.ReadValue<float>());
         playerRotate.canceled += _ => Rotate(_.ReadValue<float>());
+
+        //Run Shoot Action
+        playerShoot.performed += _ => Shoot();
     }
 
     private void Move(float value)
@@ -51,6 +61,11 @@ public class PlayerInput : MonoBehaviour
     private void Rotate(float value)
     {
         rotationInput = value;
+    }
+
+    private void Shoot()
+    {
+        ShootInput();
     }
 
     private void OnEnable()
