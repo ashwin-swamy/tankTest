@@ -15,6 +15,7 @@ public class PlayerHealth : MonoBehaviour
     // Use this for initialization
     void Start()
     {
+        // Add to Restart Game Delegate
         menu = FindFirstObjectByType<GameMenu>();
         menu.RestartGame += ResetHealth;
 
@@ -22,17 +23,19 @@ public class PlayerHealth : MonoBehaviour
         healthBar.fillAmount = 1.0f;
     }
 
+    // Damage the Player and Check Health
     public void DamagePlayer(int damage)
     {
+        // Update Health and Health Bar
         currentHealth -= damage;
-        Debug.Log((float)(currentHealth / maxHealth));
         healthBar.fillAmount = (currentHealth / maxHealth);
-        Debug.Log($"Current Health {currentHealth}");
 
+        // If Health 0 Player Loses
         if (currentHealth <= 0)
             menu.EndGame(gameObject.tag.ToString());
     }
 
+    // Add to Restart Game Delegate
     public void ResetHealth()
     {
         currentHealth = maxHealth;
@@ -41,8 +44,10 @@ public class PlayerHealth : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // Check If Bullet Hit Player
         if (collision.gameObject.CompareTag("Bullet"))
         {
+            // Damage the Player
             Projectile projectile = collision.gameObject.GetComponent<Projectile>();
             DamagePlayer(projectile.Damage);
         }

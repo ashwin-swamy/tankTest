@@ -2,6 +2,7 @@
 
 public static class Direction
 {
+    // Converted Degrees to Radians
     public const float rad = Mathf.Deg2Rad;
 
     // Caulculate direction of Movement based on Rotation

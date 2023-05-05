@@ -3,29 +3,35 @@ using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
+    // Players Enum
     private enum CurrentPlayer { player1, player2 };
-
-    private PlayerControls playerControls;
-    private float moveInput;
-    private float rotationInput;
-
     [SerializeField]
     CurrentPlayer player;
 
+    // Instance of Player Controls Input Action Map
+    private PlayerControls playerControls;
+
+    // Values to Store Move and Rotate Input
+    private float moveInput;
+    private float rotationInput;
+
+    // Delegate For Shooting Projectile
     public delegate void ShootDelegate();
 
+    // Properties to Access Input Values
     public float MoveInput { get => moveInput; }
     public float RotationInput { get => rotationInput; }
-
     public ShootDelegate ShootInput { get; set; }
 
     private void Awake()
     {
+        // Create References For the Three Input Actions
         playerControls = new PlayerControls();
         InputAction playerMove;
         InputAction playerRotate;
         InputAction playerShoot;
 
+        // Check Player to Assign Controls
         if (player == CurrentPlayer.player1)
         {
             //Assign Controls for Player 1
@@ -53,16 +59,19 @@ public class PlayerInput : MonoBehaviour
         playerShoot.performed += _ => Shoot();
     }
 
+    // Move Input Value
     private void Move(float value)
     {
         moveInput = value;
     }
 
+    // Rotate Input Value
     private void Rotate(float value)
     {
         rotationInput = value;
     }
 
+    // Shoot Input
     private void Shoot()
     {
         ShootInput();
