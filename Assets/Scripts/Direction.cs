@@ -4,6 +4,7 @@ public static class Direction
 {
     public const float rad = Mathf.Deg2Rad;
 
+    // Caulculate direction of Movement based on Rotation
     public static Vector3 MoveDirection(float rotateAngle)
     {
         float angle = rotateAngle * rad;

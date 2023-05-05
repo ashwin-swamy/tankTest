@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 using TMPro;
 
 public class GameMenu : MonoBehaviour
@@ -14,8 +13,15 @@ public class GameMenu : MonoBehaviour
     [SerializeField]
     PlayerInput player2;
 
+    [Header("Start")]
     [SerializeField]
     private CanvasGroup startPage;
+
+    [Header("Health Bars")]
+    [SerializeField]
+    private CanvasGroup playerHealthBars;
+
+    [Header("End")]
     [SerializeField]
     private CanvasGroup endPage;
     [SerializeField]
@@ -25,15 +31,18 @@ public class GameMenu : MonoBehaviour
 
     public void StartGame()
     {
-        PageActive(startPage, false);
+        playerHealthBars.alpha = alpha1;
         if (player1)
             player1.enabled = true;
         if (player2)
             player2.enabled = true;
+
+        PageActive(startPage, false);
     }
 
     public void EndGame(string loser)
     {
+        playerHealthBars.alpha = alpha0;
         if (loser.Equals("Player 2"))
             endText.text = "Player 1 Wins!";
         else
@@ -50,6 +59,7 @@ public class GameMenu : MonoBehaviour
 
     public void PlayAgain()
     {
+        playerHealthBars.alpha = alpha1;
         RestartGame();
         if (player1)
             player1.enabled = true;

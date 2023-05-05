@@ -4,6 +4,7 @@ public class PlayerMovement : MonoBehaviour
 {
     [SerializeField]
     PlayerInput playerInput;
+    [Header("Movement Variables")]
     [SerializeField]
     private float moveSpeed = 5.0f;
     [SerializeField]

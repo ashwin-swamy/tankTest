@@ -1,14 +1,16 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealth : MonoBehaviour
 {
     [SerializeField]
-    private int maxHealth = 10;
+    private float maxHealth = 10.0f;
+    [SerializeField]
+    private Image healthBar;
 
-    GameMenu menu;
+    private GameMenu menu;
 
-    private int currentHealth;
+    private float currentHealth;
 
     // Use this for initialization
     void Start()
@@ -17,11 +19,14 @@ public class PlayerHealth : MonoBehaviour
         menu.RestartGame += ResetHealth;
 
         currentHealth = maxHealth;
+        healthBar.fillAmount = 1.0f;
     }
 
     public void DamagePlayer(int damage)
     {
         currentHealth -= damage;
+        Debug.Log((float)(currentHealth / maxHealth));
+        healthBar.fillAmount = (currentHealth / maxHealth);
         Debug.Log($"Current Health {currentHealth}");
 
         if (currentHealth <= 0)
@@ -31,16 +36,14 @@ public class PlayerHealth : MonoBehaviour
     public void ResetHealth()
     {
         currentHealth = maxHealth;
+        healthBar.fillAmount = 1.0f;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        Debug.Log(collision.gameObject.tag);
         if (collision.gameObject.CompareTag("Bullet"))
         {
-            Debug.Log("Damage");
             Projectile projectile = collision.gameObject.GetComponent<Projectile>();
-            Debug.Log($"Damage: {projectile.Damage}");
             DamagePlayer(projectile.Damage);
         }
     }
